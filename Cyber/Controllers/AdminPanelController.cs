@@ -7,30 +7,41 @@ namespace Cyber.Controllers
     public class AdminPanelController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
-        public AdminPanelModel model { get; set; }
+        public AdminPanelModel model { get; set; } = new AdminPanelModel();
         public AdminPanelController(UserManager<IdentityUser> userManager)
         {
-           _userManager = userManager;
-            model.UserList= _userManager.Users.ToList();
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
-            return View();
+            model.UserList = _userManager.Users.ToList();
+            return View(model);
         }
-        public void CreateNewUser(string name, string password)
+        public IActionResult CreateNewUser(string UserName, string Password)
         {
             IdentityUser user = new IdentityUser
             {
-                UserName = name,
-                Email = name,
+                UserName = UserName,
+                Email = UserName,
                 EmailConfirmed = true
             };
-            IdentityResult result = _userManager.CreateAsync(user, password).Result;
+            IdentityResult result = _userManager.CreateAsync(user, Password).Result;
 
             if (result.Succeeded)
             {
-                _userManager.AddToRoleAsync(user, name).Wait();
+                _userManager.AddToRoleAsync(user, "User").Wait();
             }
+            return RedirectToAction("Index");
         }
+        public IActionResult BlockUser(string userId)
+        {
+            var userToBlock = _userManager.FindByIdAsync(userId).Result;
+            _userManager.SetLockoutEnabledAsync(userToBlock, true);
+            return View();
+        }
+        //public void UserListUpdate()
+        //{
+        //    model.
+        //}
     }
 }
