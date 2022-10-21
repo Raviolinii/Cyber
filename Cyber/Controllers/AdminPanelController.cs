@@ -33,11 +33,11 @@ namespace Cyber.Controllers
             }
             return RedirectToAction("Index");
         }
-        public IActionResult BlockUser(string userId)
+        public IActionResult BlockUser(string BlockedUserId)
         {
-            var userToBlock = _userManager.FindByIdAsync(userId).Result;
+            var userToBlock = _userManager.FindByIdAsync(BlockedUserId).Result;
             _userManager.SetLockoutEnabledAsync(userToBlock, true);
-            return View();
+            return RedirectToAction("Index");
         }
         //public void UserListUpdate()
         //{
