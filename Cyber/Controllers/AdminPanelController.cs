@@ -36,11 +36,19 @@ namespace Cyber.Controllers
         public async Task<IActionResult> BlockUser(string BlockedUserId)
         {
             var userToBlock = _userManager.FindByIdAsync(BlockedUserId).Result;
-            //await _userManager.SetLockoutEnabledAsync(userToBlock, false);
 
             DateTime lockoutEndDate = new DateTime(2999, 01, 01);
             await _userManager.SetLockoutEnabledAsync(userToBlock, true);
             await _userManager.SetLockoutEndDateAsync(userToBlock, lockoutEndDate);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteUser(string DeletedUserId)
+        {
+            var userToDelete = _userManager.FindByIdAsync(DeletedUserId).Result;
+
+            await _userManager.DeleteAsync(userToDelete);
 
             return RedirectToAction("Index");
         }
