@@ -33,10 +33,15 @@ namespace Cyber.Controllers
             }
             return RedirectToAction("Index");
         }
-        public IActionResult BlockUser(string BlockedUserId)
+        public async Task<IActionResult> BlockUser(string BlockedUserId)
         {
             var userToBlock = _userManager.FindByIdAsync(BlockedUserId).Result;
-            _userManager.SetLockoutEnabledAsync(userToBlock, true);
+            //await _userManager.SetLockoutEnabledAsync(userToBlock, false);
+
+            DateTime lockoutEndDate = new DateTime(2999, 01, 01);
+            await _userManager.SetLockoutEnabledAsync(userToBlock, true);
+            await _userManager.SetLockoutEndDateAsync(userToBlock, lockoutEndDate);
+
             return RedirectToAction("Index");
         }
         //public void UserListUpdate()
