@@ -15,7 +15,7 @@ namespace Cyber.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(/*"~/Areas/Identity/Pages/Account/Login.cshtml"*/);
         }
 
         public IActionResult Privacy()

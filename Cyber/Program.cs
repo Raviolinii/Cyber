@@ -19,6 +19,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<UserManager<IdentityUser>>();
 builder.Services.AddSingleton<ApplicationDbInitializer>();
+
+builder.Services.AddControllersWithViews().AddRazorPagesOptions(options => {
+    options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
+});
+
 var app = builder.Build();
 
 
@@ -47,6 +52,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+//pattern: "{controller=Login}/{action=Register}/{id?}");
 app.MapRazorPages();
 app.Services.GetService<ApplicationDbInitializer>();
 app.Run();
