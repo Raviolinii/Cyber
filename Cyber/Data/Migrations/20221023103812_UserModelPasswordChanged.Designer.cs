@@ -4,6 +4,7 @@ using Cyber.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyber.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221023103812_UserModelPasswordChanged")]
+    partial class UserModelPasswordChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,12 +58,6 @@ namespace Cyber.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("PasswordChanged")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("PasswordExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("PasswordExpirationEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")

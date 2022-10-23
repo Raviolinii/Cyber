@@ -9841,23 +9841,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Maksiolo\\.nuget\\packages\\": {},
+    "C:\\Users\\garla\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Maksiolo\\Documents\\GitHub\\Cyber\\Cyber\\Cyber.csproj",
+      "projectUniqueName": "C:\\Backup\\Studia\\Cyberbezpieczenstwo\\Cyber\\Cyber\\Cyber.csproj",
       "projectName": "Cyber",
-      "projectPath": "C:\\Users\\Maksiolo\\Documents\\GitHub\\Cyber\\Cyber\\Cyber.csproj",
-      "packagesPath": "C:\\Users\\Maksiolo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Maksiolo\\Documents\\GitHub\\Cyber\\Cyber\\obj\\",
+      "projectPath": "C:\\Backup\\Studia\\Cyberbezpieczenstwo\\Cyber\\Cyber\\Cyber.csproj",
+      "packagesPath": "C:\\Users\\garla\\.nuget\\packages\\",
+      "outputPath": "C:\\Backup\\Studia\\Cyberbezpieczenstwo\\Cyber\\Cyber\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Maksiolo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\garla\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -9929,7 +9929,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

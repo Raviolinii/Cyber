@@ -9,5 +9,7 @@ namespace Cyber.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public List<IdentityUser> UserList { get; set; }
+        
+        // bool znaki bez dublowania
     }
 }

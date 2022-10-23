@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Cyber.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cyber.Services
 {
@@ -9,15 +10,15 @@ namespace Cyber.Services
         {
             _serviceProvider = serviceProvider;
             using var scope = _serviceProvider.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
             this.SeedUser("Administrator",userManager);
             this.SeedUser("User",userManager);
         }
-        public void SeedUser(string name, UserManager<IdentityUser> userManager)
+        public void SeedUser(string name, UserManager<UserModel> userManager)
         {
             if (userManager.FindByEmailAsync(name).Result == null)
             {
-                IdentityUser user = new IdentityUser
+                UserModel user = new UserModel
                 {
                     UserName = name,
                     Email = name,
