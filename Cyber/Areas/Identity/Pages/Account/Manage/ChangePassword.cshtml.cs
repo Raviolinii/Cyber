@@ -108,6 +108,16 @@ namespace Cyber.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            if (PasswordVerification.PasswordVerificationEnabled)
+            {
+                if(!PasswordVerification.DoesntHaveDoubles(Input.NewPassword))
+                {
+                    ModelState.AddModelError(string.Empty, "Password can not contain any duplicate characters");
+                    return Page();
+                }
+            }
+
+
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {

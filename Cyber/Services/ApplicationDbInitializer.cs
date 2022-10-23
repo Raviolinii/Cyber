@@ -21,7 +21,7 @@ namespace Cyber.Services
                 UserModel user = new UserModel
                 {
                     UserName = name,
-                    Email = name,
+                    Email = name + "@gmail.com",
                     EmailConfirmed = true
                 };
 

@@ -6,9 +6,9 @@ namespace Cyber.Controllers
 {
     public class AdminPanelController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<UserModel> _userManager;
         public AdminPanelModel model { get; set; } = new AdminPanelModel();
-        public AdminPanelController(UserManager<IdentityUser> userManager)
+        public AdminPanelController(UserManager<UserModel> userManager)
         {
             _userManager = userManager;
         }
@@ -19,7 +19,7 @@ namespace Cyber.Controllers
         }
         public IActionResult CreateNewUser(string UserName, string Password)
         {
-            IdentityUser user = new IdentityUser
+            UserModel user = new UserModel
             {
                 UserName = UserName,
                 Email = UserName,

@@ -8,8 +8,6 @@ namespace Cyber.Models
         public string DeletedUserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public List<IdentityUser> UserList { get; set; }
-        
-        // bool znaki bez dublowania
+        public List<UserModel> UserList { get; set; }
     }
 }
