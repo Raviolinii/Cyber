@@ -88,6 +88,32 @@
     </div>
 </div>
 
+<h3 class="card-title">Wzmocniona weryfikacja zmiany haseł</h3>
+@if (PasswordVerification.PasswordVerificationEnabled)
+{
+    <div class="row">
+        <div class="col-sm">
+            <form asp-action="DisableVerification">
+                <div class="form-group">
+                    <input type="submit" value="Wyłącz" class="btn btn-danger" color="red" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm">
+            <form asp-action="EnableVerification">
+                <div class="form-group">
+                    <input type="submit" value="Włącz" class="btn btn-primary" color="green" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

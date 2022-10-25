@@ -1,9 +1,11 @@
 ﻿using Cyber.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cyber.Controllers
 {
+    //[Authorize(Roles = "Administrator")]
     public class AdminPanelController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
@@ -56,5 +58,15 @@ namespace Cyber.Controllers
         //{
         //    model.
         //}
+        public IActionResult EnableVerification()
+        {
+            PasswordVerification.PasswordVerificationEnabled = true;
+            return RedirectToAction("Index");
+        }
+        public IActionResult DisableVerification()
+        {
+            PasswordVerification.PasswordVerificationEnabled = false;
+            return RedirectToAction("Index");
+        }
     }
 }

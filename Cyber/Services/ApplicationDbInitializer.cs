@@ -11,8 +11,10 @@ namespace Cyber.Services
             _serviceProvider = serviceProvider;
             using var scope = _serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
-            this.SeedUser("Administrator",userManager);
-            this.SeedUser("User",userManager);
+            this.SeedUser("Administrator@gmail.com",userManager);
+            GiveAdministrator("Administrator@gmail.com", userManager);
+            this.SeedUser("User@gmail.com",userManager);
+
         }
         public void SeedUser(string name, UserManager<UserModel> userManager)
         {
@@ -21,7 +23,7 @@ namespace Cyber.Services
                 UserModel user = new UserModel
                 {
                     UserName = name,
-                    Email = name + "@gmail.com",
+                    Email = name,
                     EmailConfirmed = true
                 };
 
@@ -33,6 +35,11 @@ namespace Cyber.Services
                     userManager.AddToRoleAsync(user, name).Wait();
                 }
             }
+        }
+        public void GiveAdministrator(string email, UserManager<UserModel> userManager)
+        {
+            var user = userManager.FindByEmailAsync(email).Result;
+            userManager.AddToRoleAsync(user, "Administrator").Wait();
         }
     }
 }
