@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cyber.Controllers
 {
-    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")]
     public class AdminPanelController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
@@ -54,10 +54,7 @@ namespace Cyber.Controllers
 
             return RedirectToAction("Index");
         }
-        //public void UserListUpdate()
-        //{
-        //    model.
-        //}
+
         public IActionResult EnableVerification()
         {
             PasswordVerification.PasswordVerificationEnabled = true;
