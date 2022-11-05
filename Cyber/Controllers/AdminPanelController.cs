@@ -9,10 +9,12 @@ namespace Cyber.Controllers
     public class AdminPanelController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
+        private readonly ILogger<AdminPanelController> _logger;
         public AdminPanelModel model { get; set; } = new AdminPanelModel();
-        public AdminPanelController(UserManager<UserModel> userManager)
+        public AdminPanelController(UserManager<UserModel> userManager, ILogger<AdminPanelController> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
         public IActionResult Index()
         {
@@ -32,7 +34,10 @@ namespace Cyber.Controllers
             if (result.Succeeded)
             {
                 _userManager.AddToRoleAsync(user, "User").Wait();
+                _logger.LogInformation($"User creation succeeded. Creator: {model.UserName}. Created: {user.UserName}");
             }
+            else
+                _logger.LogWarning($"User creation failed. Creator: {model.UserName}. Not created: {user.UserName}");
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> BlockUser(string BlockedUserId)
@@ -49,8 +54,13 @@ namespace Cyber.Controllers
         public async Task<IActionResult> DeleteUser(string DeletedUserId)
         {
             var userToDelete = _userManager.FindByIdAsync(DeletedUserId).Result;
+            string userName = userToDelete.UserName;
 
-            await _userManager.DeleteAsync(userToDelete);
+            IdentityResult result = await _userManager.DeleteAsync(userToDelete);
+            if (result.Succeeded)
+                _logger.LogInformation($"User: {userName} deleted successfully by: {model.UserName}");
+            else
+                _logger.LogWarning($"User {userName} deletion failed by: {model.UserName}");
 
             return RedirectToAction("Index");
         }

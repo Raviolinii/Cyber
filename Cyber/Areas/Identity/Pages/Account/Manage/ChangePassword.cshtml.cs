@@ -110,13 +110,13 @@ namespace Cyber.Areas.Identity.Pages.Account.Manage
 
             if (PasswordVerification.PasswordVerificationEnabled)
             {
-                if(!PasswordVerification.DoesntHaveDoubles(Input.NewPassword))
+                if (!PasswordVerification.DoesntHaveDoubles(Input.NewPassword))
                 {
                     ModelState.AddModelError(string.Empty, "Password can not contain any duplicate characters");
+                    _logger.LogWarning($"User: {user.UserName} failed to change password");
                     return Page();
                 }
             }
-
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
@@ -125,11 +125,12 @@ namespace Cyber.Areas.Identity.Pages.Account.Manage
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                _logger.LogWarning($"User: {user.UserName} failed to change password");
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
+            _logger.LogInformation($"User: {user.UserName} changed password successfully");
             StatusMessage = "Your password has been changed.";
 
             return RedirectToPage();

@@ -35,6 +35,11 @@ namespace Cyber.Services
                     userManager.AddToRoleAsync(user, name).Wait();
                 }
             }
+/*            else
+            {
+                var user = userManager.FindByEmailAsync(name).Result;
+                userManager.DeleteAsync(user).Wait();
+            }*/
         }
         public void GiveAdministrator(string email, UserManager<UserModel> userManager)
         {
