@@ -20,8 +20,24 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
+builder.Services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.FromSeconds(10));
+builder.Services.AddAuthentication()
+    .Services.ConfigureApplicationCookie(options =>
+    {
+//LAB2 automatyczne wylogowanie po 15 sekundach (do przetestowania bo baza posz³a siê chrzaniæ)
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(15); // <-
+    });
 
-builder.Services.AddDefaultIdentity<UserModel>(options => options.SignIn.RequireConfirmedAccount = true)
+//LAB2 maksymalna liczba prób logowania (do przetestowania bo baza posz³a siê chrzaniæ)
+builder.Services.AddDefaultIdentity<UserModel>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    // Lockout settings
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 3; // <-
+})
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -29,7 +45,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserManager<UserModel>>();
 builder.Services.AddSingleton<ApplicationDbInitializer>();
 
-builder.Services.AddControllersWithViews().AddRazorPagesOptions(options => {
+builder.Services.AddControllersWithViews().AddRazorPagesOptions(options =>
+{
     options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
 });
 
