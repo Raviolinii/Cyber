@@ -44,6 +44,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<UserManager<UserModel>>();
 builder.Services.AddSingleton<ApplicationDbInitializer>();
+builder.Services.AddScoped<IUserAndRolesManager, UserAndRolesManager>();
 
 builder.Services.AddControllersWithViews().AddRazorPagesOptions(options =>
 {
