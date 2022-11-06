@@ -65,6 +65,20 @@ namespace Cyber.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> ChangeUserPassword(string UserToChangePassId)
+        {
+            var userToChangePassword = _userManager.FindByIdAsync(UserToChangePassId).Result;
+            var a = userToChangePassword.NormalizedUserName.Length;
+            Random rand = new Random();
+            int x = rand.Next(0, 100);
+            var equation = a * Math.Sin(x);
+            var newPassword = equation.ToString();
+            userToChangePassword.PasswordHash = _userManager.PasswordHasher.HashPassword(userToChangePassword, newPassword);
+            await _userManager.UpdateAsync(userToChangePassword);
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult EnableVerification()
         {
             PasswordVerification.PasswordVerificationEnabled = true;

@@ -114,6 +114,26 @@ else
     </div>
 }
 
+
+<h3 class="card-title">Zamiana hasła na jednorazowe</h3>
+<a>hasło to liczba utworzona według wzoru: a*sin(x), gdzie a to długość nazwy użytkownika, natomiast x to liczba losowa</a>
+<div class="row">
+    <div class="col-sm">
+        <form asp-action="ChangeUserPassword">
+            <div class="form-group my-3">
+                <label class="control-label mr-5 my-3">Użytkownik</label>
+                <select asp-items="@(List)"
+                        class="form-control" asp-for="UserToChangePassId">
+                    <option value="wybierz">---Wybierz---</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zmień hasło" class="btn btn-secondary" color="yellow" />
+            </div>
+        </form>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
