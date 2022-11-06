@@ -24,7 +24,7 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options => options.Val
 builder.Services.AddAuthentication()
     .Services.ConfigureApplicationCookie(options =>
     {
-//LAB2 automatyczne wylogowanie po 15 sekundach (do przetestowania bo baza posz³a siê chrzaniæ)
+//LAB2 automatyczne wylogowanie po 15 sekundach
         options.SlidingExpiration = true;
         options.ExpireTimeSpan = TimeSpan.FromSeconds(15); // <-
     });
