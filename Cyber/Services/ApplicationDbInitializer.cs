@@ -6,45 +6,29 @@ namespace Cyber.Services
     public class ApplicationDbInitializer
     {
         private readonly IServiceProvider _serviceProvider;
-        public ApplicationDbInitializer(IServiceProvider serviceProvider)
+        private readonly IUserAndRolesManager _userAndRolesManager;
+        public ApplicationDbInitializer(IServiceProvider serviceProvider, IUserAndRolesManager userAndRolesManager)
         {
             _serviceProvider = serviceProvider;
             using var scope = _serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
-            this.SeedUser("Administrator@gmail.com",userManager);
-            GiveAdministrator("Administrator@gmail.com", userManager);
-            this.SeedUser("User@gmail.com",userManager);
-
+            _userAndRolesManager = userAndRolesManager;            
+            EnsureBothCreated(userManager);
         }
-        public void SeedUser(string name, UserManager<UserModel> userManager)
+        public void EnsureBothCreated(UserManager<UserModel> userManager)
         {
-            if (userManager.FindByEmailAsync(name).Result == null)
+            if (userManager.FindByEmailAsync("Administrator@gmail.com").Result == null)
             {
-                UserModel user = new UserModel
-                {
-                    UserName = name,
-                    Email = name,
-                    EmailConfirmed = true
-                };
-
-                string password = "P@$$w0rd";
-                IdentityResult result = userManager.CreateAsync(user, password).Result;
-
+                var result = _userAndRolesManager.AddUser("Administrator", "Administrator@gmail.com", "P@$$w0rd").Result;
                 if (result.Succeeded)
-                {
-                    userManager.AddToRoleAsync(user, name).Wait();
-                }
+                    _userAndRolesManager.AddUserToRole("Administrator@gmail.com", "Administrator").Wait();
             }
-/*            else
+            if (userManager.FindByEmailAsync("User@gmail.com").Result == null)
             {
-                var user = userManager.FindByEmailAsync(name).Result;
-                userManager.DeleteAsync(user).Wait();
-            }*/
-        }
-        public void GiveAdministrator(string email, UserManager<UserModel> userManager)
-        {
-            var user = userManager.FindByEmailAsync(email).Result;
-            userManager.AddToRoleAsync(user, "Administrator").Wait();
+                var result = _userAndRolesManager.AddUser("User", "User@gmail.com", "P@$$w0rd").Result;
+                if (result.Succeeded)
+                    _userAndRolesManager.AddUserToRole("User@gmail.com", "User").Wait();
+            }
         }
     }
 }

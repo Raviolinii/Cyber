@@ -115,7 +115,9 @@ namespace Cyber.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                UserModel user = await _userManager.FindByEmailAsync(Input.Email);
+
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     UserModel user =  await _userManager.FindByEmailAsync(Input.Email);
@@ -131,15 +133,12 @@ namespace Cyber.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    _logger.LogWarning($"User login failed with email: {Input.Email}");
-                    return Page();
-                }
+
             }
 
             // If we got this far, something failed, redisplay form
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            _logger.LogWarning($"User login failed with email: {Input.Email}");
             return Page();
         }
     }

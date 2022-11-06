@@ -10,6 +10,7 @@ namespace Cyber.Controllers
     {
         private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<AdminPanelController> _logger;
+
         public AdminPanelModel model { get; set; } = new AdminPanelModel();
         public AdminPanelController(UserManager<UserModel> userManager, ILogger<AdminPanelController> logger)
         {
@@ -21,23 +22,24 @@ namespace Cyber.Controllers
             model.UserList = _userManager.Users.ToList();
             return View(model);
         }
-        public IActionResult CreateNewUser(string UserName, string Password)
+        public async Task<IActionResult> CreateNewUser(string UserName, string Email, string Password)
         {
             UserModel user = new UserModel
             {
                 UserName = UserName,
-                Email = UserName,
+                Email = Email,
                 EmailConfirmed = true
             };
-            IdentityResult result = _userManager.CreateAsync(user, Password).Result;
+            IdentityResult result = await _userManager.CreateAsync(user, Password);
 
             if (result.Succeeded)
             {
                 _userManager.AddToRoleAsync(user, "User").Wait();
-                _logger.LogInformation($"User creation succeeded. Creator: {model.UserName}. Created: {user.UserName}");
+                _logger.LogInformation($"User: {user.UserName} creation succeeded");
             }
             else
-                _logger.LogWarning($"User creation failed. Creator: {model.UserName}. Not created: {user.UserName}");
+                _logger.LogWarning($"User: {user.UserName} creation failed");
+
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> BlockUser(string BlockedUserId)
@@ -58,9 +60,9 @@ namespace Cyber.Controllers
 
             IdentityResult result = await _userManager.DeleteAsync(userToDelete);
             if (result.Succeeded)
-                _logger.LogInformation($"User: {userName} deleted successfully by: {model.UserName}");
+                _logger.LogInformation($"User: {userName} deleted successfully");
             else
-                _logger.LogWarning($"User {userName} deletion failed by: {model.UserName}");
+                _logger.LogWarning($"User {userName} deletion failed");
 
             return RedirectToAction("Index");
         }
