@@ -120,7 +120,6 @@ namespace Cyber.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    UserModel user =  await _userManager.FindByEmailAsync(Input.Email);
                     _logger.LogInformation($"User: {user.UserName} logged in successfully");
                     return LocalRedirect(returnUrl);
                 }

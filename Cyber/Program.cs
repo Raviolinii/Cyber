@@ -26,7 +26,7 @@ builder.Services.AddAuthentication()
     {
 //LAB2 automatyczne wylogowanie po 15 sekundach
         options.SlidingExpiration = true;
-        options.ExpireTimeSpan = TimeSpan.FromSeconds(15); // <-
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(420); // <-
     });
 
 //LAB2 maksymalna liczba prób logowania (do przetestowania bo baza posz³a siê chrzaniæ)
@@ -42,9 +42,9 @@ builder.Services.AddDefaultIdentity<UserModel>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IUserAndRolesManager, UserAndRolesManager>();
 builder.Services.AddScoped<UserManager<UserModel>>();
 builder.Services.AddSingleton<ApplicationDbInitializer>();
-builder.Services.AddScoped<IUserAndRolesManager, UserAndRolesManager>();
 
 builder.Services.AddControllersWithViews().AddRazorPagesOptions(options =>
 {

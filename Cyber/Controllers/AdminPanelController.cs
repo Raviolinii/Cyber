@@ -77,6 +77,9 @@ namespace Cyber.Controllers
             var newPassword = equation.ToString();
             userToChangePassword.PasswordHash = _userManager.PasswordHasher.HashPassword(userToChangePassword, newPassword);
             await _userManager.UpdateAsync(userToChangePassword);
+
+            _logger.LogError($"User: {userToChangePassword.UserName} generated {newPassword}");
+
             return RedirectToAction("Index");
         }
 
