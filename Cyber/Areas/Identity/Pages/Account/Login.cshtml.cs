@@ -110,9 +110,14 @@ namespace Cyber.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/Home/Privacy");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            string EncodedResponse = Request.Form["g-Recaptcha-Response"];
+            bool IsCaptchaValid = (ReCaptchaClass.Validate(EncodedResponse) == "true" ? true : false);
             if (ModelState.IsValid)
             {
+                if (IsCaptchaValid)
+                {
+                    //Valid Request
+                
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 UserModel user = await _userManager.FindByEmailAsync(Input.Email);
@@ -132,7 +137,7 @@ namespace Cyber.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-
+                }
             }
 
             // If we got this far, something failed, redisplay form
