@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using DNTCaptcha.Core;
+using Microsoft.Extensions.Options;
 
 namespace Cyber.Areas.Identity.Pages.Account
 {
@@ -23,12 +25,17 @@ namespace Cyber.Areas.Identity.Pages.Account
         private readonly SignInManager<UserModel> _signInManager;
         private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IDNTCaptchaValidatorService _validatorService;
+        private readonly DNTCaptchaOptions _captchaOptions;
 
-        public LoginModel(SignInManager<UserModel> signInManager, ILogger<LoginModel> logger, UserManager<UserModel> userManager)
+        public LoginModel(SignInManager<UserModel> signInManager, ILogger<LoginModel> logger, UserManager<UserModel> userManager,
+            IDNTCaptchaValidatorService dNTCaptchaValidatorService, IOptions<DNTCaptchaOptions> captchaOptions)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+            _validatorService = dNTCaptchaValidatorService;
+            _captchaOptions = captchaOptions==null?throw new ArgumentNullException(nameof(captchaOptions)):captchaOptions.Value;
         }
 
         /// <summary>
@@ -104,10 +111,17 @@ namespace Cyber.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             //int session = 5;
             returnUrl ??= Url.Content("~/Home/Privacy");
+
+            if(!_validatorService.HasRequestValidCaptchaEntry(Language.English, DisplayMode.ShowDigits))
+            {
+                this.ModelState.AddModelError(_captchaOptions.CaptchaComponent.CaptchaInputName, "Please enter the security code as number");
+                return Page();
+            }
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             string EncodedResponse = Request.Form["g-Recaptcha-Response"];

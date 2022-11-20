@@ -4,6 +4,9 @@
     ViewData["Title"] = "Log in";
 }
 
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 
 <h1>@ViewData["Title"]</h1>
 <div class="row">
@@ -33,8 +36,30 @@
                 </div>
                 <div>
 
-                        <div class="g-recaptcha" data-sitekey=""></div>
-                        <br />
+                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                    <br />
+
+
+                    <div>
+                        <dnt-captcha asp-captcha-generator-max="99999"
+                            asp-captcha-generator-min="99999"
+                            asp-captcha-generator-language="English"
+                            asp-captcha-generator-display-mode="ShowDigits"
+                            asp-use-relative-urls="true"
+                            asp-placeholder="Enter Captcha"
+                            asp-font-name="Tahoma"
+                            asp-font-size="20"
+                            asp-fore-color="#333333"
+                            asp-black-color="#ccc"
+                            asp-text-box-class="text-box form-control"
+                            asp-text-box-template="<span class='input-group-prepend'><span class='form-group-text'></span></span>{0}"
+                            asp-validation-error-message="Please enter the security code"
+                            asp-validation-message-class="text-danger"
+                            asp-refresh-button-class="fas fa-redo btn-sm"
+                            asp-use-noise="false"
+
+                        ></dnt-captcha>
+                    </div>
 
 
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">
@@ -62,32 +87,39 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                article
-                                about setting up this ASP.NET application to support logging in via external services
-                            </a>.
-                        </p>
-                    </div>
+                                        <div>
+                                            <p>
+                                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                                    article
+                                                    about setting up this ASP.NET application to support logging in via external services
+                                                </a>.
+                                            </p>
+                                        </div>
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
+                                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                            <div>
+                                                <p>
+                                                    @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
-                            </p>
-                        </div>
-                    </form>
+                                                </p>
+                                            </div>
+                                        </form>
                 }
             }
         </section>
     </div>
 </div>
+
+<script src="~/js/site.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js "></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

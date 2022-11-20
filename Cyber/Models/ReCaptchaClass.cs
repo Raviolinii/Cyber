@@ -8,7 +8,7 @@
         {
             var client = new System.Net.WebClient();
 
-            string PrivateKey = "";
+            string PrivateKey = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
 
             var GoogleReply = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", PrivateKey, EncodedResponse));
 
